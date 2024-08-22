@@ -28,16 +28,39 @@ const ClickCounter = () => {
       bad: values.bad + 1,
     });
   };
+
+  const resetAll = () => {
+    setValues({
+      ...values,
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+  };
+
+  const totalFeedback = values.good + values.neutral + values.bad;
+  const positiveNotes = Math.round(
+    ((values.good + values.neutral) / totalFeedback) * 100
+  );
+
   return (
     <div>
       <button onClick={updateG}>Good</button>
       <button onClick={updateN}>Neutral</button>
       <button onClick={updateB}>Bad</button>
-      <ul className={styles.list}>
-        <li>Good: {values.good}</li>
-        <li>Neutral: {values.neutral}</li>
-        <li>Bad: {values.bad}</li>
-      </ul>
+      {totalFeedback > 0 ? <button onClick={resetAll}>Reset all</button> : null}
+      {totalFeedback > 0 > 0 ? (
+        <div>
+          <ul className={styles.list}>
+            <li>Good: {values.good}</li>
+            <li>Neutral: {values.neutral}</li>
+            <li>Bad: {values.bad}</li>
+          </ul>
+          <p>Percentages of positive: {positiveNotes} </p>
+        </div>
+      ) : (
+        <p>No feedback yet</p>
+      )}
     </div>
   );
 };
